@@ -13,6 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController txtemail = TextEditingController();
   TextEditingController txtpassword = TextEditingController();
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         padding: EdgeInsets.all(20),
         child: Form(
+          key: formkey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -41,6 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(30)),
                   ),
                   validator: (Value) {
+                    txtemail = Value as TextEditingController;
                     if (Value!.isEmpty) {
                       return "Enter an email";
                     } else {
@@ -60,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(30)),
                   ),
                   validator: (Value) {
+                    txtpassword = Value as TextEditingController;
                     if (Value!.isEmpty) {
                       return "Enter a Password";
                     } else {
@@ -86,11 +90,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegisterPage(),
-                            ));
+                        if (formkey.currentState!.validate()) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RegisterPage(),
+                              ));
+                        }
                       },
                       child: Text('Register')),
                 ],
